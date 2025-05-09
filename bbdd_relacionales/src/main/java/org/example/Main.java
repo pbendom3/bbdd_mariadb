@@ -2,13 +2,12 @@ package org.example;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
         Connection conexion = conectar();
-        consulta(conexion);
-        borrar(conexion);
         consulta(conexion);
         desconectar(conexion);
 
@@ -52,6 +51,8 @@ public class Main {
         Statement stmt;
         ResultSet resultado;
 
+        ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
+
         try {
             stmt = conexion.createStatement();
             resultado = stmt.executeQuery(query);
@@ -60,8 +61,11 @@ public class Main {
                 int nia = resultado.getInt("nia");
                 String nombre = resultado.getString("nombre");
                 LocalDate fecha_nacimiento = resultado.getDate("fecha_nacimiento").toLocalDate();
-                System.out.println("NIA: " + nia + " - Nombre : " + nombre + " - Fecha nacimiento: " + fecha_nacimiento);
+                listaEstudiantes.add(new Estudiante(nia,nombre,fecha_nacimiento));
+                //   System.out.println("NIA: " + nia + " - Nombre : " + nombre + " - Fecha nacimiento: " + fecha_nacimiento);
             }
+
+            System.out.println(listaEstudiantes);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
